@@ -34,7 +34,7 @@ public class CustomerController {
         service.deleteCustomer(customerId);
     }
 
-    @PutMapping("/update/{customerId}")
+    @PatchMapping("/update/{customerId}")
     public ResponseEntity<Customer> editCustomerInfo(@RequestBody CustomerDto customerDto, @PathVariable Long customerId){
         Customer customer = service.editCustomer(customerId, customerDto);
         return ResponseEntity.ok(customer);

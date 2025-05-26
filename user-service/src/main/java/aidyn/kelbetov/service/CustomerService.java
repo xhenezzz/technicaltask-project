@@ -26,15 +26,25 @@ public class CustomerService {
         return repository.save(customer);
     }
 
-    public Customer editCustomer(Long customerId, CustomerDto customerDto){
+    public Customer editCustomer(Long customerId, CustomerDto customerDto) {
         Customer customer = repository.findById(customerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
 
-        customer.setUsername(customerDto.getUsername());
-        customer.setPosition(customerDto.getPosition());
-        customer.setCompanyId(customerDto.getCompanyId());
+        if (customerDto.getUsername() != null) {
+            customer.setUsername(customerDto.getUsername());
+        }
+
+        if (customerDto.getPosition() != null) {
+            customer.setPosition(customerDto.getPosition());
+        }
+
+        if (customerDto.getCompanyId() != null) {
+            customer.setCompanyId(customerDto.getCompanyId());
+        }
+
         return repository.save(customer);
     }
+
 
     public void deleteCustomer(Long customerId){
         Customer customer = repository.findById(customerId)
