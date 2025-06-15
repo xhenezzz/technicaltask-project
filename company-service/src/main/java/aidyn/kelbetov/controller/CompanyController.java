@@ -1,12 +1,15 @@
 package aidyn.kelbetov.controller;
 
 import aidyn.kelbetov.entity.Company;
-import aidyn.kelbetov.entity.CompanyDto;
+import aidyn.kelbetov.dto.CompanyDto;
 import aidyn.kelbetov.service.CompanyService;
-import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/company")
@@ -17,21 +20,35 @@ public class CompanyController {
         this.service = service;
     }
 
-    @GetMapping("/all")
-    public List<Company> getAllCompany(){
-        return service.getAllCompany();
+    @GetMapping("/info/all")
+    public Page<CompanyDto> getAllCompany(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue =  "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+    ){
+        Sort sort = sortDir.equalsIgnoreCase("desc") ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return service.getAllCompanies(pageable);
+    }
+
+    @GetMapping("/info/{companyId}")
+    public CompanyDto getCompanyById(@PathVariable Long companyId){
+        return service.getCompanyById(companyId);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Company> createCompany(@RequestBody CompanyDto companyDto){
-        Company company = service.createCompany(companyDto);
-        return ResponseEntity.ok(company);
+    public CompanyDto createCompany(@Valid @RequestBody CompanyDto companyDto){
+        return service.createCompany(companyDto);
     }
 
-    @PutMapping("/edit/{companyId}")
-    public ResponseEntity<Company> editCompany(@RequestBody CompanyDto companyDto, @PathVariable Long companyId){
-        Company company =  service.editCompany(companyId, companyDto);
-        return ResponseEntity.ok(company);
+    @PutMapping("/update/{companyId}")
+    public CompanyDto editCompany(@Valid @RequestBody CompanyDto companyDto, @PathVariable Long companyId){
+        return service.editCompany(companyId, companyDto);
     }
 
     @DeleteMapping("/delete/{companyId}")

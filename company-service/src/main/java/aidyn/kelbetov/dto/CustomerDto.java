@@ -1,24 +1,20 @@
 package aidyn.kelbetov.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CustomerDto {
-
     private Long id;
-    @NotNull(message = "Username cannot be blank!")
+    @NotBlank(message = "Username cannot be blank!")
     @Size(min = 4, max = 14, message = "Username must be between 4 and 14 characters!")
     private String username;
-    @NotNull
+    @NotBlank
     private Long companyId;
-    @NotNull
+    @NotBlank
     private Position position;
     private CompanyDto companyInfo;
 }

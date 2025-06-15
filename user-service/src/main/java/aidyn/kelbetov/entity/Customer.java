@@ -1,5 +1,6 @@
 package aidyn.kelbetov.entity;
 
+import aidyn.kelbetov.dto.Position;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     @NotBlank(message = "Username cannot be blank!")
     @Size(min = 4, max = 14, message = "Username must be between 4 and 14 characters!")
     private String username;

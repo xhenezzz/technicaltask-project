@@ -1,4 +1,4 @@
-package aidyn.kelbetov.entity;
+package aidyn.kelbetov.dto;
 
 public enum Position {
     CEO,
